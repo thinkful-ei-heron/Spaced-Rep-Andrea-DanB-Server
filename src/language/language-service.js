@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 'use strict';
 const LanguageService = {
 	getUsersLanguage(db, user_id) {
@@ -31,6 +32,75 @@ const LanguageService = {
 			.select('original', 'correct_count', 'incorrect_count', 'total_score')
 			.where('language.id', '=', id)
 			.first();
+	},
+
+	async getNextWord(db, num, language_id) {
+		const headId = await this.getHead(db, language_id);
+		const head = await this.getNode(db, headId.head);
+		let temp = head;
+		for (let i = 0; i < num; i++) {
+			if (temp.next === null) {
+				break;
+			} else {
+				temp = await this.getNode(db, temp.next);
+			}
+		}
+		await this.updateNextWord(db, head.id, temp.next, language_id); //sets next head to temp.next
+		await this.updateNextWord(db, temp.id, head.id, language_id); //sets temp.next to head
+		await this.updateNextWord(db, language_id, head.next); //sets head
+	},
+
+	updateNextWord(db, id, next, language_id) {
+		return db.from('language').where({ id: language_id }).update({ next });
+	},
+
+	async handleCorrectCount(db, language_id, original) {
+		const lang = await this.getLanguage(db, language_id);
+
+		const totalScore = language.total_score;
+		await db.from('language').where({ id: language_id }).update({ total_score: totalScore + 1 });
+
+		const word = await db.from('word').where({ original, language_id }).seelct('*').first();
+		await db
+			.from('word')
+			.where({ original, language_id })
+			.update({ correct_count: word.correct_count + 1, memory_value: word.memory_value * 2 });
+
+		await this.updateNextWord(db, word.memory_value * 2, language_id);
+		const head = await this.getLanguageHead(db, language_id);
+
+		return {
+			original: word.original,
+			translation: word.translation,
+			correct_count: word.correct_count,
+			incorrect_count: word.incorrect_count,
+			nextWord: head.original,
+			total_score: head.total_score
+		};
+	},
+
+	getWordTranslation(db, original) {
+		return db.from('word').select('translation').where({ original }).first();
+	},
+
+	getNode(db, id) {
+		return db.from('word').select('*').where({ id }).first();
+	},
+
+	getHead(db, id) {
+		return db.from('language').select('head').where({ id }).first();
+	},
+
+	updateHead(db, language_id, word_id) {
+		return db.from('language').where({ id: language_id }).update({ head: word_id });
+	},
+
+	getLanguage(db, id) {
+		return db.select('*').from('language').where({ id }).first();
+	},
+
+	getWord(db, id) {
+		return db.select('*').from('word').where({ id }).first();
 	}
 };
 
