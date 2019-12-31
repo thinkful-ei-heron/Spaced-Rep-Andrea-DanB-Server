@@ -50,24 +50,16 @@ languageRouter.get('/head', async (req, res, next) => {
 	}
 });
 
-languageRouter.post('/guess', async (req, res, next) => {
-	try {
-		const { language_id, guess, original } = req.body;
-		if (!guess) {
-			return res.status(400).json({ error: "Missing 'guess' in request body" });
-		}
-		const translateWord = await LanguageService.getWordTranslation(req.app.get('db'), original);
-		if (guess === translateWord.translation) {
-			const word = await LanguageService.handleCorrectCount(req.app.get('db'), language_id, original);
-			res.json({ answer: guess, correct: true, ...word });
-		} else {
-			const word = await LanguageService.handleCorrectCount(req.app.get('db'), language_id, original);
-			res.json({ answer: guess, correct: false, ...word });
-		}
-		next();
-	} catch (error) {
-		next(error);
-	}
-});
+//work in progress
+// languageRouter.post('/guess', async (req, res, next) => {
+// 	try {
+// 		const { language_id, guess, original } = req.body;
+// 		if (!guess) {
+// 			return res.status(400).json({ error: "Request body is missing 'guess'" });
+// 		}
+// 		const translateWord = await LanguageService.getWordTranslation(req.app.get('db'), original);
+
+// 	}
+// });
 
 module.exports = languageRouter;
