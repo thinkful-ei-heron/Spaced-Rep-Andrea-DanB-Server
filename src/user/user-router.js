@@ -7,6 +7,7 @@ const jsonBodyParser = express.json()
 
 userRouter
   .post('/', jsonBodyParser, async (req, res, next) => {
+    console.log('hurray')
     const { password, username, name } = req.body
 
     for (const field of ['name', 'username', 'password'])
