@@ -74,10 +74,9 @@ describe('User Endpoints', function() {
 				password: ' 1Aa!2Bb@',
 				name: 'test name'
 			};
-			return supertest(app)
-				.post('/api/user')
-				.send(userPasswordStartsSpaces)
-				.expect(400, { error: `Password must not start or end with empty spaces` });
+			return supertest(app).post('/api/user').send(userPasswordStartsSpaces).expect(400, {
+				error: `Password must not start or end with empty spaces`
+			});
 		});
 
 		it(`responds 400 error when password ends with spaces`, () => {
@@ -86,10 +85,9 @@ describe('User Endpoints', function() {
 				password: '1Aa!2Bb@ ',
 				name: 'test name'
 			};
-			return supertest(app)
-				.post('/api/user')
-				.send(userPasswordEndsSpaces)
-				.expect(400, { error: `Password must not start or end with empty spaces` });
+			return supertest(app).post('/api/user').send(userPasswordEndsSpaces).expect(400, {
+				error: `Password must not start or end with empty spaces`
+			});
 		});
 
 		it(`responds 400 error when password isn't complex enough`, () => {
@@ -139,7 +137,7 @@ describe('User Endpoints', function() {
 				};
 				return supertest(app).post('/api/user').send(newUser).expect((res) =>
 					db
-						.from('user')
+						.from('users')
 						.select('*')
 						.where({ id: res.body.id })
 						.first()
@@ -162,19 +160,17 @@ describe('User Endpoints', function() {
 					name: 'test name'
 				};
 				const expectedList = {
-					name: 'Elvish',
+					name: 'French',
 					total_score: 0,
 					words: [
-						{ original: 'quel re', translation: 'good day' },
-						{ original: 'mellon', translation: 'friend' },
-						{ original: 'dina', translation: 'be silent' },
-						{ original: 'thalias', translation: 'bravery' },
-						{ original: 'namárië', translation: 'farewell' },
-						{ original: 'parma', translation: 'book' },
-						{ original: 'áre', translation: 'sunlight' },
-						{ original: 'beleg', translation: 'mighty' },
-						{ original: 'tinco', translation: 'metal' },
-						{ original: 'amarth', translation: 'doom' }
+						{ original: 'entraine toi', translation: 'practice' },
+						{ original: 'bonjour', translation: 'hello' },
+						{ original: 'maison', translation: 'house' },
+						{ original: 'développeur', translation: 'developer' },
+						{ original: 'traduire', translation: 'translate' },
+						{ original: 'incroyable', translation: 'amazing' },
+						{ original: 'chien', translation: 'dog' },
+						{ original: 'chat', translation: 'cat' }
 					]
 				};
 				return supertest(app)
