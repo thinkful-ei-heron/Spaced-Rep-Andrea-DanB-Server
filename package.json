@@ -7,6 +7,7 @@
 		"test": "mocha --require test/setup.js",
 		"dev": "nodemon src/server.js",
 		"migrate": "postgrator --config postgrator-config.js",
+		"migrate:test": "DB_URL=postgresql://dunder-mifflin@localhost/spaced-repetition-test npm run migrate",
 		"seed": "psql -U dunder-mifflin -d spaced-repetition -a -f seeds/seed.tables.sql",
 		"start": "node src/server.js",
 		"predeploy": "npm audit",

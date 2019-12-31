@@ -104,7 +104,7 @@ describe('Language Endpoints', function() {
 			return helpers.seedUsersLanguagesWords(db, testUsers, testLanguages, testWords);
 		});
 
-		it.skip(`responds with 200 and user's languages`, () => {
+		it(`responds with 200 and user's languages`, () => {
 			return supertest(app)
 				.get(`/api/language/head`)
 				.set('Authorization', helpers.makeAuthHeader(testUser))
