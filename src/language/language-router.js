@@ -60,10 +60,10 @@ languageRouter.post('/guess', jsonBodyParser, async (req, res, next) => {
 		const translation = await LanguageService.getWordTranslation(req.app.get('db'), original);
 		if (guess === translation.translation) {
 			const word = await LanguageService.handleCorrectCount(req.app.get('db'), language_id, original);
-			res.json({ answer: guess, correct: true, ...word });
+			res.json({ answer: guess, isCorrect: true, ...word });
 		} else {
 			const word = await LanguageService.handleIncorrectCount(req.app.get('db'), language_id, original);
-			res.json({ answer: guess, correct: false, ...word });
+			res.json({ answer: guess, isCorrect: false, ...word });
 		}
 		next();
 	} catch (error) {

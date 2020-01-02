@@ -73,10 +73,10 @@ const LanguageService = {
 		return {
 			original: word.original,
 			translation: word.translation,
-			correct_count: word.correct_count,
-			incorrect_count: word.incorrect_count,
+			wordCorrectCount: word.correct_count,
+			wordIncorrectCount: word.incorrect_count,
 			nextWord: head.original,
-			total_score: head.total_score
+			totalScore: head.total_score
 		};
 	},
 
@@ -97,10 +97,10 @@ const LanguageService = {
 		return {
 			original: word.original,
 			translation: word.translation,
-			correct_count: word.correct_count,
-			incorrect_count: word.incorrect_count,
+			wordCorrectCount: word.correct_count,
+			wordIncorrectCount: word.incorrect_count,
 			nextWord: head.original,
-			total_score: head.total_score
+			totalScore: head.total_score
 		};
 	},
 
