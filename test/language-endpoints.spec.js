@@ -145,9 +145,7 @@ describe('Language Endpoints', function() {
 
 		context(`Given incorrect guess`, () => {
 			const incorrectPostBody = {
-				guess: 'incorrect',
-				original: testLanguagesWords[0].original,
-				language_id: 1
+				guess: 'incorrect'
 			};
 
 			it(`responds with incorrect and moves head`, () => {
@@ -161,9 +159,7 @@ describe('Language Endpoints', function() {
 						totalScore: 0,
 						wordCorrectCount: 0,
 						wordIncorrectCount: 1,
-						original: testLanguagesWords[0].original,
-						answer: incorrectPostBody.guess,
-						translation: testLanguagesWords[0].translation,
+						answer: testLanguagesWords[0].translation,
 						isCorrect: false
 					});
 			});
@@ -182,10 +178,8 @@ describe('Language Endpoints', function() {
 						nextWord: testLanguagesWords[0].original,
 						totalScore: 0,
 						wordCorrectCount: 0,
-						wordIncorrectCount: 2,
-						original: testLanguagesWords[0].original,
-						answer: incorrectPostBody.guess,
-						translation: testLanguagesWords[0].translation,
+						wordIncorrectCount: 1,
+						answer: testLanguagesWords[1].translation,
 						isCorrect: false
 					});
 			});
@@ -196,9 +190,7 @@ describe('Language Endpoints', function() {
 
 			it(`responds with correct and moves head`, () => {
 				const correctPostBody = {
-					guess: testLanguagesWords[0].translation,
-					original: testLanguagesWords[0].original,
-					language_id: 1
+					guess: testLanguagesWords[0].translation
 				};
 				return supertest(app)
 					.post(`/api/language/guess`)
@@ -210,18 +202,14 @@ describe('Language Endpoints', function() {
 						totalScore: 1,
 						wordCorrectCount: 1,
 						wordIncorrectCount: 0,
-						original: testLanguagesWords[0].original,
-						answer: correctPostBody.guess,
-						translation: testLanguagesWords[0].translation,
+						answer: testLanguagesWords[0].translation,
 						isCorrect: true
 					});
 			});
 
 			it(`moves the word 2 spaces, increases score and correct count`, async () => {
 				let correctPostBody = {
-					guess: testLanguagesWords[0].translation,
-					original: testLanguagesWords[0].original,
-					language_id: 1
+					guess: testLanguagesWords[0].translation
 				};
 				await supertest(app)
 					.post(`/api/language/guess`)
@@ -229,9 +217,7 @@ describe('Language Endpoints', function() {
 					.send(correctPostBody);
 
 				correctPostBody = {
-					guess: testLanguagesWords[1].translation,
-					original: testLanguagesWords[1].original,
-					language_id: 1
+					guess: testLanguagesWords[1].translation
 				};
 				await supertest(app)
 					.post(`/api/language/guess`)
@@ -242,16 +228,12 @@ describe('Language Endpoints', function() {
 						totalScore: 2,
 						wordCorrectCount: 1,
 						wordIncorrectCount: 0,
-						original: testLanguagesWords[1].original,
-						answer: correctPostBody.guess,
-						translation: testLanguagesWords[1].translation,
+						answer: testLanguagesWords[1].translation,
 						isCorrect: true
 					});
 
 				correctPostBody = {
-					guess: testLanguagesWords[2].translation,
-					original: testLanguagesWords[2].original,
-					language_id: 1
+					guess: testLanguagesWords[2].translation
 				};
 				await supertest(app)
 					.post(`/api/language/guess`)
@@ -262,9 +244,7 @@ describe('Language Endpoints', function() {
 						totalScore: 3,
 						wordCorrectCount: 1,
 						wordIncorrectCount: 0,
-						original: testLanguagesWords[2].original,
-						answer: correctPostBody.guess,
-						translation: testLanguagesWords[2].translation,
+						answer: testLanguagesWords[2].translation,
 						isCorrect: true
 					});
 			});
