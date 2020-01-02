@@ -36,6 +36,7 @@ const LanguageService = {
 	async getNextWord(db, num, language_id) {
 		const headId = await this.getHead(db, language_id);
 		let head = await this.getNode(db, headId.head);
+
 		let temp = head;
 		for (let i = 0; i < num; i++) {
 			if (temp.next === null) {
@@ -44,9 +45,12 @@ const LanguageService = {
 				temp = await this.getNode(db, temp.next);
 			}
 		}
+
 		await this.updateNextWord(db, head.id, temp.next, language_id); //sets head.next to temp.next
+
 		await this.updateNextWord(db, temp.id, head.id, language_id); //sets temp.next to head
-		await this.updateNextWord(db, language_id, head.next); //sets head
+
+		await this.updateHead(db, language_id, head.next); //sets head
 	},
 
 	async handleCorrectCount(db, language_id, original) {
@@ -55,13 +59,15 @@ const LanguageService = {
 		const totalScore = language.total_score;
 		await db.from('language').where({ id: language_id }).update({ total_score: totalScore + 1 });
 
-		const word = await db.from('word').where({ original, language_id }).select('*').first();
+		let word = await db.from('word').where({ original, language_id }).select('*').first();
 		await db.from('word').where({ original, language_id }).update({
 			correct_count: word.correct_count + 1,
 			memory_value: word.memory_value * 2
 		});
 
 		await this.getNextWord(db, word.memory_value * 2, language_id);
+		word = await db.from('word').where({ original, language_id }).select('*').first();
+
 		const head = await this.getLanguageHead(db, language_id);
 
 		return {
@@ -75,11 +81,14 @@ const LanguageService = {
 	},
 
 	async handleIncorrectCount(db, language_id, original) {
-		const word = await db.from('word').where({ original, language_id }).select('*').first();
+		let word = await db.from('word').where({ original, language_id }).select('*').first();
+
 		await db
 			.from('word')
 			.where({ original, language_id })
 			.update({ incorrect_count: word.incorrect_count + 1, memory_value: 1 });
+
+		word = await db.from('word').where({ original, language_id }).select('*').first();
 
 		await this.getNextWord(db, 1, language_id);
 
@@ -120,7 +129,7 @@ const LanguageService = {
 	},
 
 	updateNextWord(db, id, next, language_id) {
-		return db.from('language').where({ id: language_id }).update({ next });
+		return db.from('word').where({ id, language_id }).update({ next });
 	}
 };
 
