@@ -158,13 +158,13 @@ describe('Language Endpoints', function() {
 					.expect(200)
 					.expect({
 						nextWord: testLanguagesWords[1].original,
-						total_score: 0,
-						correct_count: 0,
-						incorrect_count: 1,
+						totalScore: 0,
+						wordCorrectCount: 0,
+						wordIncorrectCount: 1,
 						original: testLanguagesWords[0].original,
 						answer: incorrectPostBody.guess,
 						translation: testLanguagesWords[0].translation,
-						correct: false
+						isCorrect: false
 					});
 			});
 
@@ -180,13 +180,13 @@ describe('Language Endpoints', function() {
 					.send(incorrectPostBody)
 					.expect({
 						nextWord: testLanguagesWords[0].original,
-						total_score: 0,
-						correct_count: 0,
-						incorrect_count: 2,
+						totalScore: 0,
+						wordCorrectCount: 0,
+						wordIncorrectCount: 2,
 						original: testLanguagesWords[0].original,
 						answer: incorrectPostBody.guess,
 						translation: testLanguagesWords[0].translation,
-						correct: false
+						isCorrect: false
 					});
 			});
 		});
@@ -207,13 +207,13 @@ describe('Language Endpoints', function() {
 					.expect(200)
 					.expect({
 						nextWord: testLanguagesWords[1].original,
-						total_score: 1,
-						correct_count: 1,
-						incorrect_count: 0,
+						totalScore: 1,
+						wordCorrectCount: 1,
+						wordIncorrectCount: 0,
 						original: testLanguagesWords[0].original,
 						answer: correctPostBody.guess,
 						translation: testLanguagesWords[0].translation,
-						correct: true
+						isCorrect: true
 					});
 			});
 
@@ -239,13 +239,13 @@ describe('Language Endpoints', function() {
 					.send(correctPostBody)
 					.expect({
 						nextWord: testLanguagesWords[2].original,
-						total_score: 2,
-						correct_count: 1,
-						incorrect_count: 0,
+						totalScore: 2,
+						wordCorrectCount: 1,
+						wordIncorrectCount: 0,
 						original: testLanguagesWords[1].original,
 						answer: correctPostBody.guess,
 						translation: testLanguagesWords[1].translation,
-						correct: true
+						isCorrect: true
 					});
 
 				correctPostBody = {
@@ -259,13 +259,13 @@ describe('Language Endpoints', function() {
 					.send(correctPostBody)
 					.expect({
 						nextWord: testLanguagesWords[0].original,
-						total_score: 3,
-						correct_count: 1,
-						incorrect_count: 0,
+						totalScore: 3,
+						wordCorrectCount: 1,
+						wordIncorrectCount: 0,
 						original: testLanguagesWords[2].original,
 						answer: correctPostBody.guess,
 						translation: testLanguagesWords[2].translation,
-						correct: true
+						isCorrect: true
 					});
 			});
 		});
