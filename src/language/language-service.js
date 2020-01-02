@@ -35,7 +35,7 @@ const LanguageService = {
 
 	async getNextWord(db, num, language_id) {
 		const headId = await this.getHead(db, language_id);
-		const head = await this.getNode(db, headId.head);
+		let head = await this.getNode(db, headId.head);
 		let temp = head;
 		for (let i = 0; i < num; i++) {
 			if (temp.next === null) {
@@ -50,9 +50,9 @@ const LanguageService = {
 	},
 
 	async handleCorrectCount(db, language_id, original) {
-		const lang = await this.getLanguage(db, language_id);
+		const language = await this.getLanguage(db, language_id);
 
-		const totalScore = lang.total_score;
+		const totalScore = language.total_score;
 		await db.from('language').where({ id: language_id }).update({ total_score: totalScore + 1 });
 
 		const word = await db.from('word').where({ original, language_id }).select('*').first();
